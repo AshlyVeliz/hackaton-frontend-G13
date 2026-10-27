@@ -43,6 +43,98 @@ body {
   }
 }
 
+/* ---------- CP5: CSS Scroll-driven Animations ---------- */
+
+/* Barra de progreso de lectura: avanza con el scroll de la página, no con el tiempo.
+   Solo se activa si el navegador soporta animation-timeline (si no, ScrollProgress usa JS). */
+@supports (animation-timeline: scroll()) {
+  .scroll-progress {
+    transform-origin: 0 50%;
+    animation: grow-x linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+/* Cada etapa aparece al entrar en pantalla. Sin soporte, la etapa igual se ve
+   (y la etapa activa se resalta con una clase, que funciona en todos los navegadores). */
+@supports (animation-timeline: view()) {
+  .stage-reveal {
+    animation: stage-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 30%;
+  }
+}
+
+@keyframes grow-x {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes stage-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(48px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.metric-in {
+  animation: metric-in 0.45s ease-out;
+}
+
+@keyframes metric-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* El barco se desliza entre islas y los colores cambian suavemente (transition de CSS). */
+.story-ship {
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.story-theme {
+  transition:
+    background-color 0.6s ease,
+    color 0.6s ease;
+}
+.stage-dim {
+  transition: opacity 0.4s ease;
+}
+
+/* prefers-reduced-motion: sin animaciones ni transiciones. La historia se entiende igual
+   porque etapa, mapa, métricas y progreso se actualizan al instante. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+  .stage-reveal,
+  .metric-in {
+    animation: none !important;
+  }
+  .story-ship,
+  .story-theme,
+  .stage-dim {
+    transition: none !important;
+  }
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}
+
 @keyframes drift {
   0%,
   100% {

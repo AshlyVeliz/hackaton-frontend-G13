@@ -4,6 +4,10 @@ import PrivateRoute from "./components/PrivateRoute";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import News from "./pages/News";
+import NewsDetail from "./pages/NewsDetail";
+import Sagas from "./pages/Sagas";
+import SagaStory from "./pages/SagaStory";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
 import Wanted from "./pages/Wanted";
@@ -34,6 +38,14 @@ export const router = createBrowserRouter([
             // así el listado nunca se desmonta y al volver está exactamente igual.
             children: [{ path: ":id", element: <WantedDetail /> }],
           },
+          {
+            path: "/news",
+            element: <News />,
+            // Igual que en /wanted: el detalle se abre encima y el feed conserva su posición.
+            children: [{ path: ":id", element: <NewsDetail /> }],
+          },
+          { path: "/sagas", element: <Sagas /> },
+          { path: "/sagas/:id", element: <SagaStory /> },
         ],
       },
     ],

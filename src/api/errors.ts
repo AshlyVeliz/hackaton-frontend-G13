@@ -12,6 +12,8 @@ export type ApiError = {
   code: string;
   message: string;
   details: FieldError[];
+  // Solo en 409 NEWS_ALREADY_VERIFIED: el estado actual de la noticia (se valida antes de usarlo)
+  current?: unknown;
 };
 
 function isRecord(value: unknown): value is Record<string, unknown> {
@@ -29,7 +31,7 @@ export function toApiError(err: unknown): ApiError {
     const body: unknown = err.response?.data;
     if (isRecord(body) && typeof body.code === "string" && typeof body.message === "string") {
       const details = Array.isArray(body.details) ? body.details.filter(isFieldError) : [];
-      return { status, code: body.code, message: body.message, details };
+      return { status, code: body.code, message: body.message, details, current: body.current };
     }
     if (status === 0) {
       return {

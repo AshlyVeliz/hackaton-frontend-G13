@@ -114,3 +114,93 @@ export type LogPose = {
   unlockedAt: string | null;
   message: string;
 };
+
+// ---------- CP4: noticias (Grand Line) ----------
+
+export type NewsType =
+  | "BOUNTY_UPDATE"
+  | "BATTLE"
+  | "MARINE_OPERATION"
+  | "WORLD_GOVERNMENT"
+  | "DISCOVERY";
+export type NewsPriority = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
+export type NewsStatus = "RUMOR" | "CONFIRMED" | "DEBUNKED";
+export type NewsVerdict = "CONFIRMED" | "DEBUNKED";
+
+export type NewsItem = {
+  id: string;
+  type: NewsType;
+  priority: NewsPriority;
+  status: NewsStatus;
+  title: string;
+  summary: string;
+  source: string;
+  island: string;
+  relatedWanted: { id: string; name: string } | null;
+  publishedAt: string;
+  updatedAt: string;
+  verifiedAt: string | null;
+};
+
+export type NewsDetail = NewsItem & {
+  body: string[];
+};
+
+// Respuesta de GET /news/feed (paginación por cursor)
+export type NewsFeed = {
+  items: NewsItem[];
+  nextCursor: string | null;
+  hasMore: boolean;
+};
+
+// ---------- CP5: sagas (Grand Line) ----------
+
+export type Palette = {
+  background: string;
+  surface: string;
+  primary: string;
+  accent: string;
+  text: string;
+};
+
+export type SagaSummary = {
+  id: string;
+  order: number;
+  title: string;
+  subtitle: string;
+  synopsis: string;
+  stageCount: number;
+  totalDistanceNm: number;
+  firstIsland: string;
+  lastIsland: string;
+  palette: Palette;
+};
+
+export type StageMetric = {
+  key: "distanceNm" | "crewMorale" | "bountyPool" | "marineThreat";
+  label: string;
+  value: number;
+  unit: string;
+};
+
+export type SagaStage = {
+  id: string;
+  order: number;
+  slug: string;
+  title: string;
+  narrative: string[];
+  island: {
+    id: string;
+    name: string;
+    x: number;
+    y: number;
+  };
+  palette: Palette;
+  metrics: StageMetric[];
+};
+
+export type SagaStory = {
+  saga: SagaSummary & { intro: string };
+  map: { width: number; height: number };
+  stages: SagaStage[];
+};
