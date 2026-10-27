@@ -6,6 +6,8 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Register from "./pages/Register";
+import Wanted from "./pages/Wanted";
+import WantedDetail from "./pages/WantedDetail";
 
 export const router = createBrowserRouter([
   // Rutas públicas: solo sin sesión
@@ -25,6 +27,13 @@ export const router = createBrowserRouter([
         children: [
           { path: "/", element: <Navigate to="/dashboard" replace /> },
           { path: "/dashboard", element: <Dashboard /> },
+          {
+            path: "/wanted",
+            element: <Wanted />,
+            // Ruta hija: el detalle se dibuja ENCIMA del listado (en su <Outlet />),
+            // así el listado nunca se desmonta y al volver está exactamente igual.
+            children: [{ path: ":id", element: <WantedDetail /> }],
+          },
         ],
       },
     ],

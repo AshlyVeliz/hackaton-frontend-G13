@@ -62,6 +62,35 @@ export type WantedSummary = {
   updatedAt: string;
 };
 
+// ---------- CP2: carteles de "Se Busca" ----------
+
+// En el filtro existe "NONE" (sin fruta), aunque un cartel nunca trae type "NONE".
+export type FruitFilter = FruitType | "NONE";
+export type WantedSort = "bounty,desc" | "name,asc" | "updatedAt,desc";
+
+export type WantedDetail = WantedSummary & {
+  age: number;
+  heightCm: number;
+  bio: string;
+  lastSeen: {
+    island: string;
+    seenAt: string;
+  };
+  bountyHistory: {
+    amount: number;
+    issuedAt: string;
+  }[];
+};
+
+// Respuesta paginada de GET /wanted
+export type WantedPage = {
+  content: WantedSummary[];
+  totalElements: number;
+  totalPages: number;
+  page: number; // empieza en 0
+  size: number;
+};
+
 export type DashboardSummary = {
   team: Team;
   wanted: {
